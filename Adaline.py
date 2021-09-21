@@ -27,6 +27,6 @@ class Adaline:
     def CalculoSalida (self, entrada):
         sumatorio=0
 
-        # Utilizar producto vectorial para la suma de pesos y entradas
+        # Utilizar producto vectorial para la suma de pesos y entradas (numpy)
 
         self.salida= sumatorio + self.umbral
