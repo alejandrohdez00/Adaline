@@ -1,5 +1,4 @@
 import numpy as np
-import panda as pd
 import random
 
 class Adaline:
@@ -13,25 +12,21 @@ class Adaline:
             self.pesos[x] = random.random()
         self.salida = 0
 
-    def ajustarPesos(self, entradas, salida_esperada):
-        #Calculamos diferencia entre salida esperada y salida
+    def AjustePesos (self, entrada, salida_esperada):
         diferencia = salida_esperada - self.salida
 
-        #Actualizamos umbral
-        incremento_u = self.learning_rate*diferencia
+        #Ajuste umbral
+        incremento_u= self.aprendizaje*diferencia
         self.umbral += incremento_u
 
-        #Actualizamos pesos
-        for i in range(len(self.pesos)):
-            incremento_p = self.learning_rate*diferencia*entradas[i]
-            self.pesos[i] += incremento_p
+        #Ajuste de los pesos
+        for x in range(len(self.pesos)):
+            incremento_p= self.learning_rate*diferencia*entrada[x]
+            self.pesos[x]+=incremento_p
 
-    def calculoSalida(self, entradas):
-        #Calculamos el sumatorio de las entradas por su peso asignado
-        sumatorio = 0
+    def CalculoSalida (self, entrada):
+        sumatorio=0
+        for x in range(len(self.pesos)):
+            sumatorio+=entrada[x]*self.pesos[x]
 
-
-
-
-
-
+        self.salida= sumatorio + self.umbral
