@@ -12,3 +12,21 @@ class Adaline:
             self.pesos[x] = random.random()
         self.salida = 0
 
+    def AjustePesos (self, entrada, salida_esperada):
+        diferencia = salida_esperada - self.salida
+
+        #Ajuste umbral
+        incremento_u= self.aprendizaje*diferencia
+        self.umbral += incremento_u
+
+        #Ajuste de los pesos
+        for x in range(len(self.pesos)):
+            incremento_p= self.learning_rate*diferencia*entrada[x]
+            self.pesos[x]+=incremento_p
+
+    def CalculoSalida (self, entrada):
+        sumatorio=0
+        for x in range(len(self.pesos)):
+            sumatorio+=entrada[x]*self.pesos[x]
+
+        self.salida= sumatorio + self.umbral
