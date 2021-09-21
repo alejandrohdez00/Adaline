@@ -16,17 +16,17 @@ class Adaline:
         diferencia = salida_esperada - self.salida
 
         #Ajuste umbral
-        incremento_u= self.aprendizaje*diferencia
+        incremento_u = self.aprendizaje*diferencia
         self.umbral += incremento_u
 
         #Ajuste de los pesos
         for x in range(len(self.pesos)):
-            incremento_p= self.learning_rate*diferencia*entrada[x]
-            self.pesos[x]+=incremento_p
+            incremento_p = self.learning_rate*diferencia*entrada[x]
+            self.pesos[x] += incremento_p
 
     def CalculoSalida (self, entrada):
         sumatorio=0
-        for x in range(len(self.pesos)):
-            sumatorio+=entrada[x]*self.pesos[x]
+
+        # Utilizar producto vectorial para la suma de pesos y entradas
 
         self.salida= sumatorio + self.umbral
