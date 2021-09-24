@@ -1,5 +1,4 @@
 import numpy as np
-import panda as pd
 import random
 
 class Adaline:
@@ -8,7 +7,7 @@ class Adaline:
         self.learning_rate = learning_rate
         self.umbral = random.random()  #Valor umbral aleatorio
         # Pesos aleatorios
-        self.pesos = []
+        self.pesos = np.empty([1, numero_entradas], dtype= float)
         for x in range(numero_entradas):
             self.pesos[x] = random.random()
         self.salida = 0
@@ -28,6 +27,6 @@ class Adaline:
     def CalculoSalida (self, entrada):
         sumatorio=0
 
-        # Utilizar producto vectorial para la suma de pesos y entradas (numpy)
+        sumatorio = np.dot(self.pesos, entrada)
 
         self.salida= sumatorio + self.umbral
