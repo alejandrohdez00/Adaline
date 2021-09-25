@@ -1,32 +1,33 @@
 import numpy as np
 import random
 
+
 class Adaline:
 
-    def __init__(self, numero_entradas, learning_rate):
+    def __init__(self, celulas_entrada, learning_rate):
         self.learning_rate = learning_rate
         self.umbral = random.random()  #Valor umbral aleatorio
         # Pesos aleatorios
-        self.pesos = np.empty([1, numero_entradas], dtype= float)
-        for x in range(numero_entradas):
+        self.pesos = np.empty(celulas_entrada, dtype= float)
+        for x in range(celulas_entrada):
             self.pesos[x] = random.random()
         self.salida = 0
 
-    def AjustePesos (self, entrada, salida_esperada):
+    def ajustePesos (self, entrada, salida_esperada):
         diferencia = salida_esperada - self.salida
 
         #Ajuste umbral
-        incremento_u = self.aprendizaje*diferencia
+        incremento_u = self.learning_rate*diferencia
         self.umbral += incremento_u
 
         #Ajuste de los pesos
-        for x in range(len(self.pesos)):
-            incremento_p = self.learning_rate*diferencia*entrada[x]
-            self.pesos[x] += incremento_p
+        for i in range(len(self.pesos)):
+            incremento_p = self.learning_rate*diferencia*entrada[i]
+            self.pesos[i] += incremento_p
 
-    def CalculoSalida (self, entrada):
+    def calculoSalida (self, entrada):
         sumatorio=0
 
         sumatorio = np.dot(self.pesos, entrada)
 
-        self.salida= sumatorio + self.umbral
+        self.salida = sumatorio + self.umbral
