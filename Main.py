@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from Adaline import Adaline
+import matplotlib.pyplot as plt
 
 def error_absoluto(salida_esperada, salida):
     return abs(salida_esperada-salida)
@@ -42,10 +43,11 @@ print("Introduzca el número máximo de ciclos de aprendizaje")
 
 max_cycles = int(input())
 
-adaline = Adaline(num_atributos, 0.3)
+adaline = Adaline(num_atributos, learning_rate)
 
 cycle_count = 0
 
+error_record = []
 
 while cycle_count<max_cycles:
 
@@ -58,12 +60,13 @@ while cycle_count<max_cycles:
         error_absoluto_acumulado += error_absoluto(vector_salidas_esperadas[i], adaline.salida)
         adaline.ajustePesos(matrix[i], vector_salidas_esperadas[i])
 
-
-    error_absoluto_medio = error_absoluto_acumulado/num_entradas
+    error_absoluto_medio = error_absoluto_acumulado / num_entradas
+    error_record.append(error_absoluto_medio)
     print(error_absoluto_medio)
     cycle_count += 1
 
-
+plt.plot(list(range(max_cycles)), error_record)
+plt.show()
 
 
 
