@@ -26,8 +26,7 @@ class Adaline:
             self.pesos[i] += incremento_p
 
     def calculoSalida (self, entrada):
-        sumatorio=0
 
-        sumatorio = np.dot(self.pesos, entrada)
+       sumatorio = np.dot(self.pesos, entrada)
+       self.salida = sumatorio + self.umbral
 
-        self.salida = sumatorio + self.umbral
