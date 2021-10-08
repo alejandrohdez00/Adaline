@@ -8,7 +8,8 @@ def error_absoluto(salida_esperada, salida):
 
 #Cargamos el data set
 data_set = pd.read_csv("Concrete_Compressive_Strength_data_set.csv")
-
+resume=data_set.describe()
+print(resume)
 #Aleatorización de los datos
 random = data_set.sample(frac=1).reset_index(drop=True)
 
@@ -23,14 +24,13 @@ vector_salidas_esperadas = matrix[:, columnas_total-1]
 for i in range(len(vector_salidas_esperadas)):
     vector_salidas_esperadas[i] = (vector_salidas_esperadas[i]-np.min(vector_salidas_esperadas))/(np.max(vector_salidas_esperadas)-np.min(vector_salidas_esperadas))
 
-
 valores_maximos = np.max(matrix, axis=0)
 valores_minimos = np.min(matrix, axis=0)
+
 for i in range(columnas_total-1):
     for j in range(filas_total):
         matrix[j][i] = (matrix[j][i]-valores_minimos[i])/(valores_maximos[i]-valores_minimos[i])
 
-print(matrix)
 
 
 #Separamos el data set en training, validation y test
@@ -53,6 +53,7 @@ max_cycles = int(input())
 
 adaline = Adaline(columnas_total-1, learning_rate)
 
+print(adaline.pesos)
 cycle_count = 0
 
 error_absoluto_record_t = []  # lista de errores para el entrenamiento
@@ -94,7 +95,7 @@ error_absoluto_acumulado_test = 0
 
 fichero_salidas = open(r"fichero_salidas.txt", "r+")
 
-for i in range(len(validation_set)):
+for i in range(len(test_set)):
     adaline.calculoSalida(test_set[i])
     fichero_salidas.write(f"Salida patron {i}: {adaline.salida}\n")
     error_absoluto_acumulado_test += error_absoluto(vector_salidas_esperadas[i+validation_size], adaline.salida)
@@ -102,8 +103,8 @@ for i in range(len(validation_set)):
 error_absoluto_medio_test = error_absoluto_acumulado_test / len(test_set)
 
 
-plt.plot(list(range(max_cycles)), error_absoluto_record_t)
-plt.plot(list(range(max_cycles)), error_absoluto_record_v)
+plt.plot(list(range(max_cycles)), error_absoluto_record_t, color="red")
+plt.plot(list(range(max_cycles)), error_absoluto_record_v, color="green")
 print(error_absoluto_medio_test)
 plt.show()
 
