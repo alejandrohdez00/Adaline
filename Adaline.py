@@ -8,7 +8,7 @@ class Adaline:
         self.learning_rate = learning_rate
         self.umbral = random.random()  #Valor umbral aleatorio
         # Pesos aleatorios
-        self.pesos = np.empty(celulas_entrada, dtype= float)
+        self.pesos = np.zeros(celulas_entrada, dtype= float)
         for x in range(celulas_entrada):
             self.pesos[x] = random.random()
         self.salida = 0
