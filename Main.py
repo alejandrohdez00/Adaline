@@ -38,7 +38,6 @@ test = test.to_numpy()
 
 filas_total, columnas_total = train.shape
 
-
 #Dividimos los datos de train, validation y test en informacion de variables, es decir, las variables y salidas esperadas, la última columna
 
 train_set = train[:, :columnas_total-1]
