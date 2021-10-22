@@ -14,6 +14,7 @@ class Adaline:
         self.salida = 0
 
     def ajustePesos (self, entrada, salida_esperada):
+
         diferencia = salida_esperada - self.salida
 
         #Ajuste umbral
