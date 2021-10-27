@@ -31,3 +31,7 @@ class Adaline:
        sumatorio = np.dot(self.pesos, entrada)
        self.salida = sumatorio + self.umbral
 
+    def __str__(self):
+           return f"""Pesos: {[round(peso, 3) for peso in self.pesos]}
+Umbral: {round(self.umbral, 3)}"""
+

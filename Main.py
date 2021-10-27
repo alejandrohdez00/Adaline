@@ -22,6 +22,7 @@ data_set_norm = minmax_norm(data_set)
 #np.random.seed(0)
 randomized_data_set = data_set_norm.sample(frac=1).reset_index(drop=True)
 
+
 #Separamos los datos en train, validation y test
 train, validation, test = np.split(randomized_data_set, [int(0.7*len(randomized_data_set)), int(0.85*len(randomized_data_set))])
 
@@ -32,6 +33,7 @@ test.to_csv(r'test.csv', index = False)
 
 
 #Dataframe a numpy array para mejor tratamiento
+
 train = train.to_numpy()
 validation = validation.to_numpy()
 test = test.to_numpy()
@@ -41,19 +43,13 @@ filas_total, columnas_total = train.shape
 #Dividimos los datos de train, validation y test en informacion de variables, es decir, las variables y salidas esperadas, la última columna
 
 train_set = train[:, :columnas_total-1]
-train_salidas = train[:, -1]
-
-
+train_salidas = train[:, columnas_total-1]
 
 validation_set = validation[:, :columnas_total-1]
-validation_salidas = validation[:, -1]
+validation_salidas = validation[:, columnas_total-1]
 
 test_set = test[:, :columnas_total-1]
-test_salidas = test[:, -1]
-
-
-print(train_set.shape,train_salidas.shape, validation_set.shape, validation_salidas.shape, test_set.shape, test_salidas.shape)
-print(len(train_set), len(validation_set), len(test_set))
+test_salidas = test[:, columnas_total-1]
 
 print("Introduzca el valor del learning rate")
 
@@ -78,14 +74,17 @@ while cycle_count<max_cycles:
     #Entrenamiento
     for i in range(len(train_set)):
         adaline.calculoSalida(train_set[i])
-        error_cuadratico_acumulado_t += error_cuadratico(train_salidas[i], adaline.salida)
-        print(f"Salida {i}: {adaline.salida}")
         adaline.ajustePesos(train_set[i], train_salidas[i])
+
+    #Calculamos error entrenamiento
+    for i in range(len(train_set)):
+        adaline.calculoSalida(train_set[i])
+        error_cuadratico_acumulado_t += error_cuadratico(train_salidas[i], adaline.salida)
 
     error_cuadratico_medio_t = error_cuadratico_acumulado_t / len(train_set)
     error_cuadratico_record_t.append(error_cuadratico_medio_t)
 
-    #Validacion
+    #Calculamos error validacion
     for i in range(len(validation_set)):
         adaline.calculoSalida(validation_set[i])
         error_cuadratico_acumulado_v += error_cuadratico(validation_salidas[i], adaline.salida)
@@ -93,16 +92,17 @@ while cycle_count<max_cycles:
     error_cuadratico_medio_v = error_cuadratico_acumulado_v / len(validation_set)
     error_cuadratico_record_v.append(error_cuadratico_medio_v)
 
-    print(f"    {cycle_count}   |   {error_cuadratico_medio_t}  |   {error_cuadratico_medio_v}")
+    print(f"Ciclo: {cycle_count + 1}")
+    print(adaline)
+    print(f"Error Entrenamiento: {error_cuadratico_medio_t}")
+    print(f"Error Validación: {error_cuadratico_medio_v} \n")
 
     cycle_count += 1
 
 #Guardamos modelo
 fichero_modelo = open(r"fichero_modelo.txt", "r+")
+fichero_modelo.write(str(adaline))
 
-for i in range(len(adaline.pesos)):
-    fichero_modelo.write(f"Peso W{i+1} = {adaline.pesos[i]}\n")
-fichero_modelo.write(f"Umbral = {adaline.umbral}")
 
 #Test
 error_cuadratico_acumulado_test = 0
@@ -120,7 +120,9 @@ error_cuadratico_medio_test = error_cuadratico_acumulado_test / len(test_set)
 plt.plot(list(range(max_cycles)), error_cuadratico_record_t, color="red")
 plt.plot(list(range(max_cycles)), error_cuadratico_record_v, color="green")
 plt.show()
-print(error_cuadratico_medio_test)
+print("*******************************************")
+print(f"Error test: {error_cuadratico_medio_test}")
+
 
 
 
